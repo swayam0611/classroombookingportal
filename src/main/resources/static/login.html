@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COEP Booking Login</title>
+    <style>
+        :root {
+            --primary: #d4a373; /* Match your existing theme */
+            --dark: #1a1a1a;
+            --white: #fefae0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: var(--white);
+        }
+
+        .login-card {
+            background: #252525;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 { color: var(--primary); margin-bottom: 1.5rem; }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #1a1a1a;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            border: none;
+            border-radius: 6px;
+            color: var(--dark);
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: #bc8a5f;
+            transform: translateY(-2px);
+        }
+
+        #errorMessage {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>COEP Portal Login</h2>
+        <div class="form-group">
+            <label>College Email</label>
+            <input type="email" id="email" placeholder="example@coeptech.ac.in">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="••••••••">
+        </div>
+        
+        <button onclick="handleLogin()">Login</button>
+        
+        <p id="errorMessage">Invalid credentials. Please try again.</p>
+    </div>
+
+    <script>
+        async function handleLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMessage');
+
+            // Reset error state
+            errorMsg.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/users/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (response.ok) {
+                    // Success! Redirect to the main page
+                    window.location.href = "bookings_main.html";
+                } else if (response.status === 401) {
+                    // Unauthorized (Wrong credentials)
+                    errorMsg.innerText = "Invalid email or password.";
+                    errorMsg.style.display = 'block';
+                } else {
+                    // Other server errors
+                    errorMsg.innerText = "Server error. Please check if backend is running.";
+                    errorMsg.style.display = 'block';
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);
+                errorMsg.innerText = "Network error. Connection refused.";
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        // Allow pressing "Enter" to login
+        document.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                handleLogin();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>COEP Classroom Booking Panel</title>
+    <style>
+        /* 1. Global Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #fdfaf5; /* Soft cream background */
+    color: #333;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+/* 2. Header Style */
+#title {
+    background-color: #3f3e3e;
+    color: #fff;
+    padding: 2rem;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+h3 {
+    margin: 20px 0 10px 10px;
+    color: #555;
+    border-left: 5px solid #d4a373; /* COEP-style accent line */
+    padding-left: 15px;
+}
+
+/* 3. Modern Table Styling */
+#roomTable {
+    width: 95%;
+    margin: 20px auto;
+    border-collapse: collapse; /* Removes double borders */
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden; /* Ensures corners stay rounded */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+#roomTable thead {
+    background-color: #d4a373;
+    color: white;
+}
+
+#roomTable th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+#roomTable td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+#roomTable tbody tr:hover {
+    background-color: #fff9f0; /* Highlight row on hover */
+    transition: background-color 0.2s ease;
+}
+
+/* 4. Form & Input Styling (For your "Add Room" section) */
+.form-group {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px auto;
+    width: 95%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #d4a373;
+    outline: none;
+}
+
+/* 5. Button Styling */
+button {
+    cursor: pointer;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    background-color: #3f3e3e;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #d4a373;
+    transform: translateY(-2px); /* Slight lift effect */
+}
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">COEP Room Booking</div>
+    </nav>
+    <h1 id="title">Classroom Booking Register</h1>
+
+    <div class="form-group">   
+        <h3>Create new booking</h3>
+        <input type="number" id="roomID" placeholder="Room ID">
+        <input type="date" id="bookingDate">
+        <input type="text" id="bookingPurpose" placeholder="Purpose">
+        <input type="time" id="startTime" placeholder="Start Time">
+        <input type="time" id="endTime" placeholder="End Time">
+        <input type="text" id="subject" placeholder="Subject">
+        <input type="number" id="professorID" placeholder="Professor ID">       
+        <button onclick="createBooking()">Create Booking</button>
+    </div>
+    
+    
+
+    <h3 style="margin-left: 30px;">Existing Rooms</h3>
+    <table id="roomTable">
+        
+        <thead>
+            <tr>
+                <th>Purpose</th>
+                <th>Date</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Subject</th>
+                <th>Booker</th>
+                <th>Professor</th>
+                <th>Room</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="bookingList"></tbody>
+    </table>
+
+    
+
+    
+
+    <script src="bookings.js"></script>
+</body>
+</html>
