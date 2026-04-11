@@ -51,8 +51,12 @@ async function loadRooms() {
 
 async function deleteRoom(id) {
     if (confirm("Are you sure you want to delete this room?")) {
-        await fetch(`/api/rooms/${id}`, { method: 'DELETE' });
-        loadRooms(); // Refresh the list
+        const res = await fetch(`/api/rooms/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            alert("Room Deleted.");
+        } else {
+            alert(await res.text());
+        }
     }
 }
 

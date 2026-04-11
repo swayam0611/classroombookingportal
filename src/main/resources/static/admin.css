@@ -1,0 +1,117 @@
+/* 1. Global Reset & Base Styles */
+:root {
+    --bg-body: #f0f2f5;
+    --bg-card: #ffffff;
+    --primary-blue: #1a73e8;
+    --primary-hover: #1557b0;
+    --text-main: #202124;
+    --text-muted: #5f6368;
+    --border-color: #dadce0;
+    --shadow: 0 1px 3px rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    padding: 40px;
+    line-height: 1.6;
+}
+
+/* Header Title Style */
+#title {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    padding: 25px;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow);
+    font-size: 28px;
+    font-weight: 500;
+}
+
+/* Form Container (The Card) */
+.form-group {
+    background-color: var(--bg-card);
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 800px; /* Wider for room management */
+    margin: 0 auto 40px auto;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+
+h3 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-main);
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* Inputs & Selects */
+input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    color: var(--text-main);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+}
+
+
+/* Table Styling - Clean & Modern */
+#roomTable {
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: var(--bg-card);
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+#roomTable thead {
+    background-color: #f8f9fa;
+}
+
+#roomTable th {
+    padding: 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--border-color);
+}
+
+#roomTable td {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
+    font-size: 15px;
+}
+
+#roomTable tbody tr:hover {
+    background-color: #f1f3f4;
+}

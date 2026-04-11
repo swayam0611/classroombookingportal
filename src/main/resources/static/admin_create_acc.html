@@ -4,77 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Accounts</title>
-    <style>
-        :root {
-    --bg-body: #f0f2f5;
-    --bg-card: #ffffff;
-    --primary-blue: #1a73e8;
-    --primary-hover: #1557b0;
-    --text-main: #202124;
-    --text-muted: #5f6368;
-    --border-color: #dadce0;
-    --shadow: 0 1px 3px rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-body);
-    color: var(--text-main);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.admin-card {
-    background-color: var(--bg-card);
-    padding: 40px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-color);
-}
-
-h2 {
-    margin-top: 0;
-    font-size: 24px;
-    font-weight: 500;
-    text-align: center;
-    color: var(--text-main);
-    margin-bottom: 30px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    font-weight: 500;
-    font-size: 14px;
-    margin-bottom: 8px;
-    color: var(--text-main);
-}
-
-input, select {
-    width: 100%;
-    padding: 12px 15px;
-    font-size: 16px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    box-sizing: border-box; /* Keeps padding from breaking width */
-    transition: border-color 0.2s, box-shadow 0.2s;
-    background-color: #fff;
-    color: var(--text-main);
-}
-
-input:focus, select:focus {
-    outline: none;
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 0 2
-    </style>
+    <link rel="stylesheet" href="admin_create_acc.css">
 </head>
 <body>
     <div class="form-group">   
@@ -102,72 +32,7 @@ input:focus, select:focus {
     <tbody id="userList"></tbody>
         
     </table>
-    <script>
-        async function createAccount() {
-            const userContact = document.getElementById('contactNumber').value;
-            const userDivision = document.getElementById('division').value;
-            const userEmail = document.getElementById('email').value;
-            const userName = document.getElementById('name').value;
-            const userOrganization = document.getElementById('organization').value;
-            const userRole = document.getElementById('role').value;
-            const userPassword = document.getElementById('password').value;
-
-            const userData = {
-                contactNumber: userContact,
-                division: userDivision,
-                email: userEmail,
-                name: userName,
-                organization: userOrganization,
-                role: userRole,
-                password: userPassword
-            };
-
-            const res = await fetch('api/users', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(userData)
-            });
-
-            if (res.ok) {
-                alert('User created successfully.');
-            }
-            loadUsers();
-        }
-
-        window.onload = function() {
-            loadUsers();
-        }
-
-        async function loadUsers() {
-            const res = await fetch('api/users');
-            const users = await res.json();
-
-            const tableBody = document.getElementById('userList');
-            tableBody.innerHTML = '';
-
-            users.forEach (user => {
-                const row = `
-                <tr><td>${user.id}</td>
-                    <td>${user.contactNumber}</td>
-                    <td>${user.division}</td>
-                    <td>${user.email}</td>
-                    <td>${user.name}</td>
-                    <td>${user.organization}</td>
-                    <td>${user.role}</td>
-                    <td><button onclick='deleteUser(${user.id})'>Delete</button></td>
-                </tr>
-                `;
-                tableBody.innerHTML += row;
-            });
-        }
-
-        async function deleteUser(id) {
-            const res = await fetch(`/api/users/${id}`, {method: 'DELETE'});
-            if (res.ok) {
-                alert('User Deleted.');
-            }
-            loadUsers();
-        }
+    <script src="admin_create_acc.js">
     </script>
 </body>
 </html>

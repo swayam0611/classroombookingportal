@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Professors</title>
+    <link rel="stylesheet" href="admin_profs.css">
+</head>
+<body>
+    <div class="form-group">   
+        <h3>Create New Professor Account</h3>
+        <input type="number" id="id" placeholder="ID"><br>
+        <input type="text" id="department" placeholder="Department"><br>
+        <input type="text" id="name" placeholder="Name"><br>
+        <button id="submit" onclick="createAccount()">Create Account</button>
+    </div>
+
+    <table>
+        <thead><tr><th>Id</th>
+                <th>Deparment</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody id="profsList"></tbody>     
+    </table>
+
+    <script src="admin_profs.js"></script>
+</body>
+</html>
