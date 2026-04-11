@@ -32,7 +32,7 @@ This project serves as a practical implementation of core OO concepts:
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 ```text
 src/
 ├── main/
