@@ -4,113 +4,135 @@
     <title>COEP Classroom Booking Panel</title>
     <style>
         /* 1. Global Reset & Base Styles */
+/* --- MODERN LIGHT UI REPLICA --- */
+
+:root {
+    --bg-body: #f0f2f5;
+    --bg-card: #ffffff;
+    --primary-blue: #1a73e8;
+    --primary-hover: #1557b0;
+    --text-main: #202124;
+    --text-muted: #5f6368;
+    --border-color: #dadce0;
+    --shadow: 0 1px 3px rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: #fdfaf5; /* Soft cream background */
-    color: #333;
-    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    padding: 40px;
     line-height: 1.6;
 }
 
-/* 2. Header Style */
+/* Header/Navbar Styling */
+nav {
+    background-color: var(--bg-card);
+    padding: 15px 40px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    margin: -40px -40px 30px -40px; /* Flush with top */
+}
+
+.logo {
+    font-weight: 600;
+    color: var(--primary-blue);
+    font-size: 1.2rem;
+}
+
 #title {
-    background-color: #3f3e3e;
-    color: #fff;
-    padding: 2rem;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    padding: 25px;
     text-align: center;
     border-radius: 8px;
     margin-bottom: 30px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow);
+    font-size: 28px;
+    font-weight: 500;
+}
+
+/* Form Container (The Card) */
+.form-group {
+    background-color: var(--bg-card);
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 95%; /* Wider for the many booking inputs */
+    margin: 0 auto 40px auto;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
 }
 
 h3 {
-    margin: 20px 0 10px 10px;
-    color: #555;
-    border-left: 5px solid #d4a373; /* COEP-style accent line */
-    padding-left: 15px;
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-main);
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
 }
 
-/* 3. Modern Table Styling */
+/* Inputs, Selects, and Dates */
+input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    color: var(--text-main);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+}
+
+
+/* Table Styling */
 #roomTable {
     width: 95%;
     margin: 20px auto;
-    border-collapse: collapse; /* Removes double borders */
-    background-color: white;
+    background-color: var(--bg-card);
+    border-collapse: collapse;
     border-radius: 8px;
-    overflow: hidden; /* Ensures corners stay rounded */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    box-shadow: var(--shadow);
 }
 
 #roomTable thead {
-    background-color: #d4a373;
-    color: white;
+    background-color: #f8f9fa;
 }
 
 #roomTable th {
-    padding: 15px;
+    padding: 16px;
     text-align: left;
     font-weight: 600;
+    font-size: 13px;
+    color: var(--text-muted);
     text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
+    border-bottom: 2px solid var(--border-color);
 }
 
 #roomTable td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #eee;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
+    font-size: 14px;
 }
 
 #roomTable tbody tr:hover {
-    background-color: #fff9f0; /* Highlight row on hover */
-    transition: background-color 0.2s ease;
-}
-
-/* 4. Form & Input Styling (For your "Add Room" section) */
-.form-group {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    margin: 20px auto;
-    width: 95%;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-.form-group input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
-    transition: border-color 0.3s;
-}
-
-.form-group input:focus {
-    border-color: #d4a373;
-    outline: none;
-}
-
-/* 5. Button Styling */
-button {
-    cursor: pointer;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
-    background-color: #3f3e3e;
-    color: white;
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
-
-button:hover {
-    background-color: #d4a373;
-    transform: translateY(-2px); /* Slight lift effect */
+    background-color: #f1f3f4;
 }
     </style>
 </head>

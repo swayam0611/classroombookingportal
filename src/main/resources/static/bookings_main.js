@@ -7,15 +7,17 @@ async function userLogOut() {
     window.location.href = "login.html";
 }
 
+let user;
+
 async function displayUser() {
     const check_session = await fetch('api/check-session');
     if (check_session.ok) {
         const email = await check_session.text();
         const res = await fetch(`api/users/${email}`);
-        const user = await res.json();
+        user = await res.json();
         const displayElement = document.getElementById('userDisplay');
         if (displayElement) {
-            displayElement.innerText = `Welcome, ${user.name}`;
+            displayElement.innerText = `${user.name}`;
         }
     } else {
         window.location.href = "login.html";
@@ -125,6 +127,8 @@ function changeMonth(offset) {
 function showDepts() {
     document.getElementById('deptView').style.display = 'block';
     document.getElementById('roomView').style.display = 'none';
+    document.getElementById('scheduleView').style.display = 'none';
+    document.getElementById('userBookingsView').style.display = 'none';
 }
 
 // functions for showing rooms
@@ -189,7 +193,9 @@ async function showSchedule(roomId, roomName) {
     document.getElementById('displayRoom').value = roomId;
     document.getElementById('form-group-error-msg').style.display = 'none';
 
-    document.getElementById('selectedRoomName').innerText = roomName;
+    const date_sel = formatDateTime(selectedDate).date;
+
+    document.getElementById('selectedRoomName').innerText = `${roomName}, on ${date_sel}`;
     document.getElementById('selectedRoomId').innerText = roomId;
 
     fetchBookingsByRoomId(roomId);
@@ -278,4 +284,54 @@ async function createBooking() {
     } else {
         alert(await response.text());
     }
+}
+
+
+//displying user bookings
+
+async function userBookings() {
+    document.getElementById('deptView').style.display = 'none';
+    document.getElementById('scheduleView').style.display = 'none';
+    document.getElementById('roomView').style.display = 'none';
+    document.getElementById('userBookingsView').style.display = 'block';
+
+    document.getElementById('userName').innerText = user.name;
+
+    displayUserBookings();
+}
+
+async function displayUserBookings() {
+    const res = await fetch(`/api/bookings/user/${user.id}`);
+    const bookings = await res.json();
+
+    const tableBody = document.getElementById('userBookingList');
+    tableBody.innerHTML = '';
+
+    if (bookings.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan=7 style="text-align:center">You have made no bookings</td></tr>';
+    }
+
+    bookings.forEach(booking => {
+        const start = formatDateTime(booking.startTime).time;
+        const end = formatDateTime(booking.endTime).time;
+        const date = formatDateTime(booking.startTime).date;
+    
+        const row = `
+                <tr>
+                    <td>${date}</td>
+                    <td>${booking.room.name}</td>
+                    <td>${start}</td>
+                    <td>${end}</td>
+                    <td>${booking.subject}</td>
+                    <td>${booking.professor?.name || 'N/A'}</td>
+                    <td><button class="action-btns" onclick="deleteBooking(${booking.id})")>Delete</button>
+                </tr>
+            `;
+        tableBody.innerHTML += row;
+    });
+}
+
+async function deleteBooking(id) {
+    const res = await fetch(`/api/bookings/${id}`, {method: 'DELETE'});
+    displayUserBookings();
 }

@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COEP Room Scheduler</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Lobster&family=Space+Grotesk:wght@300..700&display=swap');
         :root {
             --primary: #d4a373;
             --dark: #1a1a1a;
+            --darker: #111111;
             --panel: #252525;
             --white: #fefae0;
             --border: #444;
@@ -24,17 +26,24 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            font-family: 'EB Garamound', sans-serif;
+
         }
 
         nav {
             height: 60px;
-            background-color: var(--panel);
-            border-bottom: 2px solid var(--primary);
+            background-color: var(--dark);
+            border-bottom: 2px solid var(--border);
             display: flex;
             align-items: center;
             /* justify-content: space-between; */
             padding: 0 2rem;
             flex-shrink: 0;
+            transition: 0.3s;
+        }
+
+        nav:hover {
+            background-color: var(--darker);
         }
 
         .main-container {
@@ -45,16 +54,18 @@
         /* --- LEFT SIDEBAR: THE CALENDAR --- */
         .sidebar-left {
             width: 320px;
-            background-color: var(--panel);
+            background-color: var(--dark);
             padding: 1rem;
             border-right: 1px solid var(--border);
+            transition: 0.3s;
         }
+
 
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
         }
 
         .calendar-grid {
@@ -62,14 +73,17 @@
             grid-template-columns: repeat(7, 1fr);
             text-align: center;
             font-size: 0.85rem;
+            margin-right: 10px;
+            margin-left: 0px;
         }
 
         .calendar-day-label { color: #888; font-weight: bold; margin-bottom: 10px; }
 
         .calendar-date {
-            padding: 8px 0;
+            padding: 4px 0;
+            margin: 1px;
             cursor: pointer;
-            border-radius: 50%;
+            border-radius: 20%;
             transition: 0.2s;
             aspect-ratio: 1/1;
             display: flex;
@@ -77,8 +91,37 @@
             justify-content: center;
         }
 
+        .back-front {
+            width: 40px;
+            height: 40px;
+            
+            background: var(--panel);
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .action-btns {
+            width: 100%;
+            height: 40px;
+            
+            background: var(--panel);
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .back-front:hover, .action-btns:hover {border-color: var(--primary);}
+        
+
         .calendar-date:hover { background: var(--border); }
-        .calendar-date.active { background: var(--selected-blue); color: white; font-weight: bold; }
+        .calendar-date.active { background: var(--primary); color: white; font-weight: bold; }
         .calendar-date.today { border: 1px solid var(--primary); }
         .calendar-date.other-month { color: #555; }
 
@@ -87,6 +130,7 @@
             flex: 1;
             padding: 2rem;
             overflow-y: auto;
+            transition: 0.5s;
         }
 
         .section-title {
@@ -116,32 +160,37 @@
         .card-btn:hover { border-color: var(--primary); transform: translateY(-3px); }
 
         /* Hidden by default, JS will toggle display: block */
-        #roomView, #scheduleView, #selectedRoomId, #form-group-error-msg, #form-group-error-msg-2 { display: none; }
+        #roomView, #scheduleView, #selectedRoomId, #userBookingsView, #form-group-error-msg, #form-group-error-msg-2 { display: none; }
 
         /* --- RIGHT SIDEBAR: FORM --- */
         .sidebar-right {
             width: 300px;
-            background-color: var(--panel);
+            background-color: var(--dark);
             padding: 1.5rem;
             border-left: 1px solid var(--border);
+            transition: 0.3s;
         }
 
         .form-group { margin-bottom: 1.2rem; }
-        label { font-size: 0.8rem; color: #aaa; }
+        label { font-size: 0.8rem; color: #aaa;}
         input { 
             width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box;
-            background: #111; color: white; border: 1px solid var(--border); border-radius: 4px;
+            background: #111; color: white; border: 1px solid var(--border); border-radius: 10px;
         }
-
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { padding: 12px; border: 1px solid var(--border); text-align: left; }
+        tr:hover {
+            background-color: var(--darker);
+        }
+        
     </style>
 </head>
 <body>
 
     <nav>
         <div style="font-size: 1.2rem; font-weight: bold; margin-right: 1100px;">COEP Scheduler</div>
-        <div id="userDisplay" style="margin-right: 10px;"></div><button onclick="userLogOut()">LogOut</button>
+        <div id="userDisplay"></div><button class="action-btns" onclick="userLogOut()" style="margin-right: 10px; margin-left: 10px;">LogOut</button>
+        <button class="action-btns" onclick="userBookings()">My Bookings</button> 
     </nav>
 
     <div class="main-container">
@@ -149,8 +198,8 @@
             <div class="calendar-header">
                 <span id="monthYear">April 2026</span>
                     <div>
-                        <button onclick="changeMonth(-1)">&lt;</button>
-                        <button onclick="changeMonth(1)">&gt;</button>
+                        <button class="back-front" onclick="changeMonth(-1)">&lt;</button>
+                        <button class="back-front" onclick="changeMonth(1)">&gt;</button>
                     </div>
             </div>
             <div class="calendar-grid">
@@ -188,14 +237,14 @@
             </section>
 
             <section id="roomView">
-                <button onclick="showDepts()" style="margin-bottom: 20px;">&larr; Back to Depts</button>
+                <button class="back-front" onclick="showDepts()">&larr;</button>
                 <h2 class="section-title">Rooms in <span id="selectedDeptName"></span></h2>
                 <div class="btn-grid" id="roomBtnContainer">
                 </div>
             </section>
 
             <section id="scheduleView">
-                <button onclick="showRooms(document.getElementById('selectedDeptName').innerText)" style="margin-bottom: 20px;">&larr; Back to Rooms</button>
+                <button class="back-front" onclick="showRooms(document.getElementById('selectedDeptName').innerText)">&larr;</button>
                 <h2 class="section-title">Schedule for <span id="selectedRoomName">...</span><span id="selectedRoomId"></span></h2>
                 <table>
                     <thead>
@@ -207,6 +256,25 @@
                         </tr>
                     </thead>
                     <tbody id="bookingList"></tbody>
+                </table>
+            </section>  
+
+            <section id="userBookingsView">
+                <button class="back-front" onclick="showDepts()">&larr;</button>
+                <h2 class="section-title">Bookings for <span id="userName">...</span><span id="selectedRoomId"></span></h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Room</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Subject</th>
+                            <th>Professor</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userBookingList"></tbody>
                 </table>
             </section>
         </main>
@@ -221,7 +289,7 @@
             <div class="form-group"><label>End</label><input type="time" id="endTime"></div>
             <div class="form-group"><label>Subject</label><input type="text" id="subject"></div>
             <div class="form-group"><label>Professor ID</label><input type="number" id="professor"></div>
-            <button style="width: 100%; background: var(--primary); border: none; padding: 12px; font-weight: bold; cursor: pointer;" onclick="createBooking()">
+            <button class="back-front" style="width: 100%;" onclick="createBooking()">
                 Confirm
             </button>
         </aside>
