@@ -1,47 +1,55 @@
-# Room Scheduler & Classroom Booking Portal
-### A Full-Stack Classroom Management System
+# Classroom Booking Portal
 
----
+A web app for booking lecture halls and labs at a college. Students and faculty can check which rooms are free and book them; admins manage rooms, professors, and bookings.
 
-## Project Overview
-The **Room Scheduler** is a web-based application designed to streamline the process of booking lecture halls and labs across various departments. The system provides a real-time, interactive interface for students and faculty to check room availability and manage academic schedules efficiently.
+## Tech stack
 
-## Tech Stack
-* **Frontend:** HTML5, CSS3 (Custom Grid Layouts), JavaScript (ES6+, Fetch API)
-* **Backend:** Java 17, Spring Boot 3.x, Spring Data JPA
-* **Database:** PostgreSQL
-* **Session Management:** `HttpSession` (Server-side tracking)
-* **Version Control:** Git
+- Frontend: plain HTML, CSS, JavaScript
+- Backend: Java 17, Spring Boot, Spring Data JPA
+- Database: PostgreSQL
 
-## Key Features
-* **Interactive Dynamic Calendar:** A custom-built JavaScript calendar allowing users to select dates and view schedules instantly.
-* **Department-wise Browsing:** Categorized view for CS, EnTC, Mechanical, Electrical, and more.
-* **Collision Detection System:** Backend logic in the Service layer that prevents double-booking and overlapping schedules.
-* **Business Rule Enforcement:** Ensures bookings align with 30-minute academic slots.
-* **Session-based Authentication:** Basic Login/Logout flow to authenticate users for booking data.
-* **Admin Portal:** Admin can create new lecture halls, and manage/cancel any bookings.
+## Features
 
----
+- Calendar view to check room availability by date
+- Book a room for a lecture or event
+- Bookings must sit on 30-minute slots (e.g. 9:00, 9:30)
+- Blocks bookings that overlap an existing one for the same room
+- Login/logout using server-side sessions
+- Admin pages to add rooms, add professors, and cancel any booking
 
-## Object-Oriented principles used:
-This project serves as a practical implementation of core OO concepts:
-* **Encapsulation:** Business logic is encapsulated within the `BookingService` class, protecting it from direct controller manipulation.
-* **Abstraction:** Database interactions are abstracted through Spring Data JPA interfaces.
-* **Inheritance:** Custom exception handling via `BookingValidationException` which extends the standard `RuntimeException`.
-* **Polymorphism:** Utilized Repository-level polymorphism for specialized query methods.
+## Project structure
 
----
-
-## Project Structure
-```text
+```
 src/
 ├── main/
 │   ├── java/com/coep/booking/
-│   │   ├── controller/   # REST API Endpoints
-│   │   ├── model/        # Database Entities (User, Room, Booking)
-│   │   ├── repository/   # JPA Data Access Objects
-│   │   ├── service/      # Business Logic & Conflict Checks
-│   │   └── exception/    # Custom Exception Handlers
+│   │   ├── ClassroomBookingApplication.java   # entry point
+│   │   ├── Booking.java, Room.java, User.java, Professor.java   # data models
+│   │   ├── BookingController.java, RoomController.java,
+│   │   │   UserController.java, ProfessorController.java,
+│   │   │   CheckSessionController.java, CountController.java   # API endpoints
+│   │   ├── BookingRepository.java, RoomRepository.java,
+│   │   │   UserRepository.java, ProfessorRepository.java   # database access
+│   │   ├── BookingService.java   # slot validation and overlap checks
+│   │   ├── InvalidBookingException.java   # custom exception
+│   │   └── LoginRequest.java
 │   └── resources/
-│       ├── static/       # Frontend (HTML, CSS, JS)
-│       └── application.properties # Database & App Config
+│       ├── static/   # frontend pages (login, bookings, admin, etc.)
+│       └── application.properties   # database config
+└── test/   # basic test setup
+```
+
+## Setup
+
+1. Create a PostgreSQL database.
+2. Set the database URL, username, and password in `src/main/resources/application.properties`.
+3. Run the app:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+4. Open `http://localhost:8080` in your browser.
+
+## Notes
+
+- Room-conflict and slot-length checks happen in `BookingService`.
+- Invalid bookings throw `InvalidBookingException`, with a message explaining why.
